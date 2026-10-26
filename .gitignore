@@ -1,0 +1,94 @@
+# =========================
+# Java / General
+# =========================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+*.log
+
+# =========================
+# Build & Dependency Tools
+# =========================
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+bin/
+*.gradle.kts
+!gradle-wrapper.jar
+
+# =========================
+# ANTLR Generated Files
+# =========================
+# Ignore ANTLR generated parser/lexer classes and metadata tokens
+# (Adjust the path or pattern if your generated files go to a specific directory like 'src/main/gen/' or 'target/generated-sources/')
+*.tokens
+*.smap
+*.interp
+*.bak
+*.tmp
+
+# Common ANTLR generated Java files (Lexer, Parser, Listener, Visitor)
+# Use specific directory exclusions if you output generated code to a dedicated folder:
+gen/
+generated/
+**/generatedCode/
+
+# Example: If ANTLR generates files right alongside your .g4 or in a package structure, 
+# you can ignore specific generated class names or keep grammar sources (.g4) tracked:
+# *Lexer.java
+# *Parser.java
+# *Listener.java
+# *Visitor.java
+
+# =========================
+# IDEs
+# =========================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+tmp/
+.metadata/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# =========================
+# Operating System
+# =========================
+.DS_Store
+Thumbs.db
+
