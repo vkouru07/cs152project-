@@ -28,7 +28,13 @@ public class Environment {
      */
     public Value resolveVar(String varName) {
         // YOUR CODE HERE
-        return null;
+        if (env.containsKey(varName))
+            return env.get(varName);
+
+        if (outerEnv == null)
+            return null;
+
+        return outerEnv.resolveVar(varName);
     }
 
     /**
@@ -38,6 +44,10 @@ public class Environment {
      */
     public void updateVar(String key, Value v) {
         // YOUR CODE HERE
+        if (outerEnv == null || env.containsKey(key))
+            env.put(key, v);
+        else
+            outerEnv.updateVar (key, v);
     }
 
     /**
@@ -47,5 +57,8 @@ public class Environment {
      */
     public void createVar(String key, Value v) {
         // YOUR CODE HERE
+        if (env.containsKey(key))
+            throw new RuntimeException ("recreated variable.. " + key);
+        env.put (key, v);
     }
 }
