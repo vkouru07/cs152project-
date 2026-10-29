@@ -73,8 +73,66 @@ class BinOpExpr implements Expression {
     @SuppressWarnings("incomplete-switch")
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
-        return null;
-    }
+        
+        Value first = this.e1.evaluate(env);
+        Value second = this.e2.evaluate(env);
+
+        IntVal firstInt = (IntVal) first;
+        IntVal secondInt = (IntVal) second;
+
+        // ADD, SUBTRACT, MULTIPLY, DIVIDE, MOD, GT, GE, LT, LE, EQ
+        switch (this.op){
+            case ADD:
+                return new IntVal(firstInt.toInt() + secondInt.toInt());
+            
+            case SUBTRACT:
+                return new IntVal(firstInt.toInt() - secondInt.toInt());
+            
+            case MULTIPLY:
+                return new IntVal(firstInt.toInt() * secondInt.toInt());
+            
+            case DIVIDE:
+                if(secondInt.toInt() == 0){
+                    throw new RuntimeException("Cannot divide by zero");
+                }
+                return new IntVal(firstInt.toInt() / secondInt.toInt());
+
+            case MOD:
+                return new IntVal(firstInt.toInt() % secondInt.toInt());
+
+            case GT:
+                if(firstInt.toInt() > secondInt.toInt()){
+                    return new BoolVal(true);
+                }
+                return new BoolVal(false);
+
+            case GE:
+                if(firstInt.toInt() >= secondInt.toInt()){
+                    return new BoolVal(true);
+                }
+                return new BoolVal(false);
+
+            case LT:
+                if(firstInt.toInt() < secondInt.toInt()){
+                    return new BoolVal(true);
+                }
+                return new BoolVal(false);
+
+            case LE:
+                if(firstInt.toInt() <= secondInt.toInt()){
+                    return new BoolVal(true);
+                }
+                return new BoolVal(false);
+
+            case EQ:
+                if(firstInt.toInt() == secondInt.toInt()){
+                    return new BoolVal(true);
+                }
+                return new BoolVal(false);
+
+        }
+        
+    throw new RuntimeException("Not supported");
 }
 
 /**
@@ -92,7 +150,19 @@ class IfExpr implements Expression {
     }
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
-        return null;
+
+        Value cond1 = this.cond.evaluate(env);
+        //Value thn1 = this.thn.evaluate(env);
+        //Value els1 = this.els.evaluate(env);
+
+        // if cond, evaluate thn, else evaluate els
+        if(((IntVal) cond1).toInt() != 0){
+            return this.thn.evaluate(env);
+        }
+        else{
+            return this.els.evaluate(env);
+        }
+
     }
 }
 
@@ -108,7 +178,16 @@ class WhileExpr implements Expression {
     }
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
-        return null;
+
+        //Value cond1 = this.cond.evaluate(env);
+        //Value body1 = this.body.evaluate(env);
+        Value val = new IntVal(0); // this val keeps track of while loop value
+
+        // while cond, evaluate body
+        while(((BoolVal) this.cond.evaluate(env)).toBoolean()){
+            val = this.body.evaluate(env);
+        }
+        return val;
     }
 }
 
