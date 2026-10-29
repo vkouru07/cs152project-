@@ -73,7 +73,7 @@ class BinOpExpr implements Expression {
     @SuppressWarnings("incomplete-switch")
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
-        
+
         Value first = this.e1.evaluate(env);
         Value second = this.e2.evaluate(env);
 
@@ -81,18 +81,18 @@ class BinOpExpr implements Expression {
         IntVal secondInt = (IntVal) second;
 
         // ADD, SUBTRACT, MULTIPLY, DIVIDE, MOD, GT, GE, LT, LE, EQ
-        switch (this.op){
+        switch (this.op) {
             case ADD:
                 return new IntVal(firstInt.toInt() + secondInt.toInt());
-            
+
             case SUBTRACT:
                 return new IntVal(firstInt.toInt() - secondInt.toInt());
-            
+
             case MULTIPLY:
                 return new IntVal(firstInt.toInt() * secondInt.toInt());
-            
+
             case DIVIDE:
-                if(secondInt.toInt() == 0){
+                if (secondInt.toInt() == 0) {
                     throw new RuntimeException("Cannot divide by zero");
                 }
                 return new IntVal(firstInt.toInt() / secondInt.toInt());
@@ -101,38 +101,39 @@ class BinOpExpr implements Expression {
                 return new IntVal(firstInt.toInt() % secondInt.toInt());
 
             case GT:
-                if(firstInt.toInt() > secondInt.toInt()){
+                if (firstInt.toInt() > secondInt.toInt()) {
                     return new BoolVal(true);
                 }
                 return new BoolVal(false);
 
             case GE:
-                if(firstInt.toInt() >= secondInt.toInt()){
+                if (firstInt.toInt() >= secondInt.toInt()) {
                     return new BoolVal(true);
                 }
                 return new BoolVal(false);
 
             case LT:
-                if(firstInt.toInt() < secondInt.toInt()){
+                if (firstInt.toInt() < secondInt.toInt()) {
                     return new BoolVal(true);
                 }
                 return new BoolVal(false);
 
             case LE:
-                if(firstInt.toInt() <= secondInt.toInt()){
+                if (firstInt.toInt() <= secondInt.toInt()) {
                     return new BoolVal(true);
                 }
                 return new BoolVal(false);
 
             case EQ:
-                if(firstInt.toInt() == secondInt.toInt()){
+                if (firstInt.toInt() == secondInt.toInt()) {
                     return new BoolVal(true);
                 }
                 return new BoolVal(false);
 
         }
-        
-    throw new RuntimeException("Not supported");
+
+        throw new RuntimeException("Not supported");
+    }
 }
 
 /**
