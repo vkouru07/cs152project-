@@ -1,7 +1,9 @@
 package edu.sjsu.fwjs;
 
-import java.util.ArrayList;
+
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * FWJS expressions.
@@ -64,6 +66,7 @@ class BinOpExpr implements Expression {
     private Op op;
     private Expression e1;
     private Expression e2;
+
     public BinOpExpr(Op op, Expression e1, Expression e2) {
         this.op = op;
         this.e1 = e1;
@@ -73,7 +76,7 @@ class BinOpExpr implements Expression {
     @SuppressWarnings("incomplete-switch")
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
-        
+
         Value first = this.e1.evaluate(env);
         Value second = this.e2.evaluate(env);
 
@@ -81,18 +84,18 @@ class BinOpExpr implements Expression {
         IntVal secondInt = (IntVal) second;
 
         // ADD, SUBTRACT, MULTIPLY, DIVIDE, MOD, GT, GE, LT, LE, EQ
-        switch (this.op){
+        switch (this.op) {
             case ADD:
                 return new IntVal(firstInt.toInt() + secondInt.toInt());
-            
+
             case SUBTRACT:
                 return new IntVal(firstInt.toInt() - secondInt.toInt());
-            
+
             case MULTIPLY:
                 return new IntVal(firstInt.toInt() * secondInt.toInt());
-            
+
             case DIVIDE:
-                if(secondInt.toInt() == 0){
+                if (secondInt.toInt() == 0) {
                     throw new RuntimeException("Cannot divide by zero");
                 }
                 return new IntVal(firstInt.toInt() / secondInt.toInt());
@@ -101,38 +104,39 @@ class BinOpExpr implements Expression {
                 return new IntVal(firstInt.toInt() % secondInt.toInt());
 
             case GT:
-                if(firstInt.toInt() > secondInt.toInt()){
+                if (firstInt.toInt() > secondInt.toInt()) {
                     return new BoolVal(true);
                 }
                 return new BoolVal(false);
 
             case GE:
-                if(firstInt.toInt() >= secondInt.toInt()){
+                if (firstInt.toInt() >= secondInt.toInt()) {
                     return new BoolVal(true);
                 }
                 return new BoolVal(false);
 
             case LT:
-                if(firstInt.toInt() < secondInt.toInt()){
+                if (firstInt.toInt() < secondInt.toInt()) {
                     return new BoolVal(true);
                 }
                 return new BoolVal(false);
 
             case LE:
-                if(firstInt.toInt() <= secondInt.toInt()){
+                if (firstInt.toInt() <= secondInt.toInt()) {
                     return new BoolVal(true);
                 }
                 return new BoolVal(false);
 
             case EQ:
-                if(firstInt.toInt() == secondInt.toInt()){
+                if (firstInt.toInt() == secondInt.toInt()) {
                     return new BoolVal(true);
                 }
                 return new BoolVal(false);
 
         }
-        
-    throw new RuntimeException("Not supported");
+
+        throw new RuntimeException("Not supported");
+    }
 }
 
 /**
@@ -143,11 +147,13 @@ class IfExpr implements Expression {
     private Expression cond;
     private Expression thn;
     private Expression els;
+
     public IfExpr(Expression cond, Expression thn, Expression els) {
         this.cond = cond;
         this.thn = thn;
         this.els = els;
     }
+
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
 
@@ -156,10 +162,9 @@ class IfExpr implements Expression {
         //Value els1 = this.els.evaluate(env);
 
         // if cond, evaluate thn, else evaluate els
-        if(((IntVal) cond1).toInt() != 0){
+        if (((IntVal) cond1).toInt() != 0) {
             return this.thn.evaluate(env);
-        }
-        else{
+        } else {
             return this.els.evaluate(env);
         }
 
@@ -172,19 +177,20 @@ class IfExpr implements Expression {
 class WhileExpr implements Expression {
     private Expression cond;
     private Expression body;
+
     public WhileExpr(Expression cond, Expression body) {
         this.cond = cond;
         this.body = body;
     }
+
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
-
         //Value cond1 = this.cond.evaluate(env);
         //Value body1 = this.body.evaluate(env);
         Value val = new IntVal(0); // this val keeps track of while loop value
 
         // while cond, evaluate body
-        while(((BoolVal) this.cond.evaluate(env)).toBoolean()){
+        while (((BoolVal) this.cond.evaluate(env)).toBoolean()) {
             val = this.body.evaluate(env);
         }
         return val;
@@ -197,10 +203,12 @@ class WhileExpr implements Expression {
 class SeqExpr implements Expression {
     private Expression e1;
     private Expression e2;
+
     public SeqExpr(Expression e1, Expression e2) {
         this.e1 = e1;
         this.e2 = e2;
     }
+
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
         return null;
@@ -213,10 +221,12 @@ class SeqExpr implements Expression {
 class VarDeclExpr implements Expression {
     private String varName;
     private Expression exp;
+
     public VarDeclExpr(String varName, Expression exp) {
         this.varName = varName;
         this.exp = exp;
     }
+
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
         return null;
@@ -231,10 +241,12 @@ class VarDeclExpr implements Expression {
 class AssignExpr implements Expression {
     private String varName;
     private Expression e;
+
     public AssignExpr(String varName, Expression e) {
         this.varName = varName;
         this.e = e;
     }
+
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
         return null;
@@ -244,32 +256,46 @@ class AssignExpr implements Expression {
 /**
  * A function declaration, which evaluates to a closure.
  */
+
+    // FunctionDeclExpr takes a list of parameter names and a body.
+    // When evaluated, it returns a closure included the environment
+    // used when it was defined.
 class FunctionDeclExpr implements Expression {
     private List<String> params;
     private Expression body;
+
     public FunctionDeclExpr(List<String> params, Expression body) {
         this.params = params;
         this.body = body;
     }
+
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
-        return null;
+        return new ClosureVal(params, body, env);
     }
 }
 
 /**
  * Function application.
  */
+    // FunctionAppExpr takes an expression (which should evaluate to a closure)
+    // and a list of arguments.  When evaluated, the environment is ignored.
+    // Instead a new environment is created including all of the parameters with
+    // the arguments bound to the parameter names.  Note that you will need to
+    // evaluate each argument to a value before the closure.apply method can be used.
 class FunctionAppExpr implements Expression {
     private Expression f;
     private List<Expression> args;
+
     public FunctionAppExpr(Expression f, List<Expression> args) {
         this.f = f;
         this.args = args;
     }
+
     public Value evaluate(Environment env) {
         // YOUR CODE HERE
-        return null;
+        List<Value> argVals = args.stream().map (expr -> expr.evaluate(env)).toList();
+        return ((ClosureVal)(f.evaluate(env))).apply (argVals);
     }
 }
 
