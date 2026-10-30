@@ -154,15 +154,24 @@ class IfExpr implements Expression {
         this.els = els;
     }
 
-    public Value evaluate(Environment env) {
+   public Value evaluate(Environment env) {
         // YOUR CODE HERE
 
         Value cond1 = this.cond.evaluate(env);
         //Value thn1 = this.thn.evaluate(env);
         //Value els1 = this.els.evaluate(env);
-
+        boolean bool = false;
+        if (cond1 instanceof BoolVal){
+            bool = ((BoolVal) cond1).toBoolean();
+        }
+        else if (cond1 instanceof IntVal){
+            bool = ((IntVal) cond1).toInt() != 0;
+        }
+        else{
+            throw new RuntimeException("Condition can't be evalutated");
+        }
         // if cond, evaluate thn, else evaluate els
-        if (((IntVal) cond1).toInt() != 0) {
+        if (bool) {
             return this.thn.evaluate(env);
         } else {
             return this.els.evaluate(env);
