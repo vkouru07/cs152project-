@@ -179,7 +179,7 @@ class WhileExpr implements Expression {
         // YOUR CODE HERE
         //Value cond1 = this.cond.evaluate(env);
         //Value body1 = this.body.evaluate(env);
-        Value val = new IntVal(0); // this val keeps track of while loop value
+        Value val = new NullVal();
 
         // while cond, evaluate body
         while (((BoolVal) this.cond.evaluate(env)).toBoolean()) {
@@ -202,8 +202,7 @@ class SeqExpr implements Expression {
     public Value evaluate(Environment env) {
 
         this.e1.evaluate(env);
-        Value val = this.e2.evaluate(env);
-        return val;
+        return this.e2.evaluate(env);
 
     }
 }
@@ -224,7 +223,6 @@ class VarDeclExpr implements Expression {
         env.createVar(varName, val);
 
         return val;
-
     }
 }
 
