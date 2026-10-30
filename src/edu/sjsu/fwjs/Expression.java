@@ -203,15 +203,16 @@ class WhileExpr implements Expression {
 class SeqExpr implements Expression {
     private Expression e1;
     private Expression e2;
-
     public SeqExpr(Expression e1, Expression e2) {
         this.e1 = e1;
         this.e2 = e2;
     }
-
     public Value evaluate(Environment env) {
-        // YOUR CODE HERE
-        return null;
+
+        this.e1.evaluate(env);
+        Value val = this.e2.evaluate(env);
+        return val;
+
     }
 }
 
@@ -221,15 +222,17 @@ class SeqExpr implements Expression {
 class VarDeclExpr implements Expression {
     private String varName;
     private Expression exp;
-
     public VarDeclExpr(String varName, Expression exp) {
         this.varName = varName;
         this.exp = exp;
     }
-
     public Value evaluate(Environment env) {
-        // YOUR CODE HERE
-        return null;
+
+        Value val = exp.evaluate(env);
+        env.createVar(varName, val);
+
+        return val;
+
     }
 }
 
@@ -241,15 +244,17 @@ class VarDeclExpr implements Expression {
 class AssignExpr implements Expression {
     private String varName;
     private Expression e;
-
     public AssignExpr(String varName, Expression e) {
         this.varName = varName;
         this.e = e;
     }
-
     public Value evaluate(Environment env) {
-        // YOUR CODE HERE
-        return null;
+
+        Value val = e.evaluate(env);
+        env.updateVar(varName, val);
+
+        return val;
+    
     }
 }
 
