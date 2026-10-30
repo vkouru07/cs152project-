@@ -156,27 +156,10 @@ class IfExpr implements Expression {
 
    public Value evaluate(Environment env) {
         // YOUR CODE HERE
-
-        Value cond1 = this.cond.evaluate(env);
-        //Value thn1 = this.thn.evaluate(env);
-        //Value els1 = this.els.evaluate(env);
-        boolean bool = false;
-        if (cond1 instanceof BoolVal){
-            bool = ((BoolVal) cond1).toBoolean();
+       if (((BoolVal)cond.evaluate(env)).toBoolean()) {
+            return thn.evaluate(env);
         }
-        else if (cond1 instanceof IntVal){
-            bool = ((IntVal) cond1).toInt() != 0;
-        }
-        else{
-            throw new RuntimeException("Condition can't be evalutated");
-        }
-        // if cond, evaluate thn, else evaluate els
-        if (bool) {
-            return this.thn.evaluate(env);
-        } else {
-            return this.els.evaluate(env);
-        }
-
+        return els.evaluate(env);
     }
 }
 
